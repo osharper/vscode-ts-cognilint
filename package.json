@@ -1,0 +1,79 @@
+{
+  "name": "vscode-ts-cognilint",
+  "displayName": "tsCognilint",
+  "description": "Displays Cognitive Complexity for TypeScript/JavaScript functions via underlines.",
+  "version": "0.1.0",
+  "engines": {
+    "vscode": "^1.65.0"
+  },
+  "publisher": "osharper",
+  "categories": [
+    "Other"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/osharper/vscode-ts-cognilint"
+  },
+  "activationEvents": [
+    "onLanguage:javascript",
+    "onLanguage:javascriptreact",
+    "onLanguage:typescript",
+    "onLanguage:typescriptreact"
+  ],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "commands": [],
+    "configuration": {
+      "title": "tsCognilint",
+      "properties": {
+        "tsCognilint.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable/disable cognitive complexity analysis and underlining."
+        },
+        "tsCognilint.warningThreshold": {
+          "type": "number",
+          "default": 10,
+          "description": "Complexity above this value triggers a 'warning' diagnostic. Complexity below this value is currently ignored."
+        },
+        "tsCognilint.errorThreshold": {
+          "type": "number",
+          "default": 20,
+          "description": "Complexity above this value triggers a 'error' diagnostic."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run webpack",
+    "compile": "tsc -p ./",
+    "watch": "webpack --watch --devtool nosources-source-map --info-verbosity verbose --config ./webpack.config.js",
+    "webpack": "webpack --mode production --config ./webpack.config.js",
+    "webpack-dev": "webpack --mode development --config ./webpack.config.js",
+    "lint": "eslint src --ext ts",
+    "pretest": "npm run compile && npm run lint",
+    "test": "node ./out/test/runTest.js",
+    "package": "vsce package",
+    "publish": "vsce publish"
+  },
+  "devDependencies": {
+    "@types/glob": "^7.2.0",
+    "@types/mocha": "^9.1.0",
+    "@types/node": "14.x",
+    "@types/vscode": "^1.65.0",
+    "@typescript-eslint/eslint-plugin": "^5.12.1",
+    "@typescript-eslint/parser": "^5.12.1",
+    "@vscode/test-electron": "^2.1.3",
+    "@vscode/vsce": "^3.3.2",
+    "eslint": "^8.11.0",
+    "glob": "^7.2.0",
+    "mocha": "^9.2.2",
+    "ts-loader": "^9.2.8",
+    "typescript": "^4.5.5",
+    "webpack": "^5.70.0",
+    "webpack-cli": "^4.9.2"
+  },
+  "dependencies": {
+    "cognitive-complexity-ts": "^0.6.5"
+  }
+}
