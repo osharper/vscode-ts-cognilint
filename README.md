@@ -1,6 +1,6 @@
 # TS Cognilint
 
-Extension based on (Cognitive-Complexity-TS)[https://github.com/Deskbot/Cognitive-Complexity-TS] inspired by (resharper-cognitivecomplexity)[https://github.com/matkoch/resharper-cognitivecomplexity] and (vscode-cognitive-complexity-show)[https://github.com/ampcpmgp/vscode-cognitive-complexity-show]
+Extension based on [Cognitive-Complexity-TS]([https://github.com/Deskbot/Cognitive-Complexity-TS) inspired by [resharper-cognitivecomplexity](https://github.com/matkoch/resharper-cognitivecomplexity) and [vscode-cognitive-complexity-show](https://github.com/ampcpmgp/vscode-cognitive-complexity-show)
 
 ## Features
 
