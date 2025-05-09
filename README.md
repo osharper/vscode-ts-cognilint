@@ -2,6 +2,8 @@
 
 Extension based on [Cognitive-Complexity-TS]([https://github.com/Deskbot/Cognitive-Complexity-TS) inspired by [resharper-cognitivecomplexity](https://github.com/matkoch/resharper-cognitivecomplexity) and [vscode-cognitive-complexity-show](https://github.com/ampcpmgp/vscode-cognitive-complexity-show)
 
+## [Marketplace link](https://marketplace.visualstudio.com/items?itemName=osharper.vscode-ts-cognilint)
+
 ## Features
 
 Calculates the Cognitive Complexity score for functions and methods in TypeScript and JavaScript files (`.js`, `.ts`, `.jsx`, `.tsx`) and displays scores exceeding configured thresholds as standard VS Code Diagnostics.
