@@ -1,5 +1,7 @@
 # TS Cognilint
 
+Extension based on (Cognitive-Complexity-TS)[https://github.com/Deskbot/Cognitive-Complexity-TS] inspired by (resharper-cognitivecomplexity)[https://github.com/matkoch/resharper-cognitivecomplexity] and (vscode-cognitive-complexity-show)[https://github.com/ampcpmgp/vscode-cognitive-complexity-show]
+
 ## Features
 
 Calculates the Cognitive Complexity score for functions and methods in TypeScript and JavaScript files (`.js`, `.ts`, `.jsx`, `.tsx`) and displays scores exceeding configured thresholds as standard VS Code Diagnostics.
@@ -19,3 +21,4 @@ You can customize the behavior in VS Code Settings under "tsCognilint":
 
 *   `tsCognilint.enabled`: Enable or disable the extension (default: `true`).
 *   `tsCognilint.warningThreshold`: Complexity above this value triggers a `Warning` diagnostic (default: `10`). Complexity below this value is currently ignored.
+*   `tsCognilint.errorThreshold`: Complexity above this value triggers a `Error` diagnostic (default: `20`).
