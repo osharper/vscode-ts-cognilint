@@ -26,6 +26,23 @@ export function activate(context: vscode.ExtensionContext): void {
     diagnosticCollection = vscode.languages.createDiagnosticCollection("tsCognilint");
     context.subscriptions.push(diagnosticCollection);
 
+    // Register CodeActionProvider for Quick Fixes
+    const quickFixProvider = new TsCogniLintQuickFixProvider();
+    context.subscriptions.push(
+        vscode.languages.registerCodeActionsProvider(
+            [
+                { language: 'typescript', scheme: 'file' },
+                { language: 'typescriptreact', scheme: 'file' },
+                { language: 'javascript', scheme: 'file' },
+                { language: 'javascriptreact', scheme: 'file' }
+            ],
+            quickFixProvider,
+            {
+                providedCodeActionKinds: TsCogniLintQuickFixProvider.providedCodeActionKinds
+            }
+        )
+    );
+
     let config = vscode.workspace.getConfiguration('tsCognilint');
 
     // Update diagnostics when configuration changes
@@ -157,6 +174,15 @@ async function processActiveFile(document: vscode.TextDocument | undefined): Pro
                 );
                 if (!symbol || item.score === undefined) return;
 
+                // Check for ignore comment
+                const ignoreComment = "// tscognilint-ignore";
+                if (symbol.selectionRange.start.line > 0) {
+                    const lineAboveText = document.lineAt(symbol.selectionRange.start.line - 1).text.trim();
+                    if (lineAboveText === ignoreComment) {
+                        return; // Skip diagnostic for this function
+                    }
+                }
+
                 const range = symbol.selectionRange;
                 const score = item.score;
                 currentScores.set(rangeToString(range), score); // Store score keyed by range string
@@ -253,4 +279,44 @@ export function deactivate(): void {
     // Clear any pending timers
     debounceTimers.forEach(timer => clearTimeout(timer));
     debounceTimers.clear();
+}
+
+/**
+ * Provides quick fixes for tsCognilint diagnostics.
+ */
+class TsCogniLintQuickFixProvider implements vscode.CodeActionProvider {
+    public static readonly providedCodeActionKinds = [
+        vscode.CodeActionKind.QuickFix
+    ];
+
+    provideCodeActions(
+        document: vscode.TextDocument,
+        range: vscode.Range | vscode.Selection,
+        context: vscode.CodeActionContext,
+        token: vscode.CancellationToken,
+    ): vscode.ProviderResult<(vscode.Command | vscode.CodeAction)[]> {
+        const actions: vscode.CodeAction[] = [];
+
+        for (const diagnostic of context.diagnostics) {
+            if (diagnostic.source === 'tsCognilint') {
+                // Check if the diagnostic is for a function that can be ignored.
+                // The diagnostic range should correspond to a function symbol's range.
+                const lineToInsert = diagnostic.range.start.line;
+                if (lineToInsert >= 0) {
+                    const fix = new vscode.CodeAction(
+                        `Ignore Cognitive Complexity for this function (tsCognilint)`,
+                        vscode.CodeActionKind.QuickFix
+                    );
+                    fix.edit = new vscode.WorkspaceEdit();
+                    const lineAbove = document.lineAt(lineToInsert).firstNonWhitespaceCharacterIndex;
+                    const indentation = document.lineAt(lineToInsert).text.substring(0, lineAbove);
+                    fix.edit.insert(document.uri, new vscode.Position(lineToInsert, 0), `${indentation}// tscognilint-ignore\n`);
+                    fix.diagnostics = [diagnostic]; // Associate this action with the diagnostic
+                    fix.isPreferred = true;
+                    actions.push(fix);
+                }
+            }
+        }
+        return actions;
+    }
 }
