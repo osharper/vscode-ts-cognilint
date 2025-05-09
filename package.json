@@ -2,7 +2,7 @@
   "name": "vscode-ts-cognilint",
   "displayName": "tsCognilint",
   "description": "Displays Cognitive Complexity for TypeScript/JavaScript functions via underlines.",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "engines": {
     "vscode": "^1.65.0"
   },
